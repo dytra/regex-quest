@@ -189,7 +189,7 @@ export default function Game() {
                       : " border-gray-200"
                     }`}
                 >
-                  <code className="font-mono text-sm">{result.text}</code>
+                  <code className="font-mono">{result.text}</code>
                   <div className="flex items-center gap-2">
                     <Badge variant={result.shouldMatch ? "default" : "secondary"}>
                       {result.shouldMatch ? "Should Match" : "Should Not Match"}
