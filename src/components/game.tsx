@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { CheckCircle, XCircle, Target, Trophy, RotateCcw, Lightbulb } from "lucide-react"
 import { ModeToggle } from "./ui/mode-toggle"
 import Image from "next/image";
-import { levels } from "@/lib/levels"
+import { Level, levels } from "@/lib/levels"
 import Link from "next/link"
 import { motion } from "motion/react"
 
@@ -182,7 +182,7 @@ export default function Game() {
               </div>
             </div>
             <div className="space-y-2">
-              <TestStrings regex={regex} results={results} />
+              <TestStrings regex={regex} results={results} level={level} />
             </div>
           </div>
 
@@ -222,29 +222,35 @@ type TestString = {
 type TestStringsProps = {
   regex: string
   results: TestString[]
+  level: Level
 }
 const TestStrings = ({
   regex,
   results,
+  level,
 }: TestStringsProps
 ) => {
   return (
     <>
       {results.map((result, index) => (
         <motion.div
-          key={`result-${index}`}
+          key={`${level.id}-${index}`} // Use level.id to ensure unique keys across levels
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{
-            duration: 0.4,
-            delay: index * 0.1, // staggered animation
-            ease: "easeOut"
+            type: "spring",
+            stiffness: 300,
+            damping: 20,
+            bounce: 0.4,
+            duration: 0.35,
+            delay: index * 0.085,
+            ease: "easeInOut"
           }}
           className={`flex items-center justify-between flex-wrap p-3 rounded-lg border ${regex && result.correct
-              ? " border-green-400"
-              : regex && !result.correct
-                ? " border-red-400"
-                : " border-gray-200"
+            ? " border-green-400"
+            : regex && !result.correct
+              ? " border-red-400"
+              : " border-gray-200"
             }`}
         >
           <code className="font-mono">{result.text}</code>
