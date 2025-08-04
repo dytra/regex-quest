@@ -32,15 +32,17 @@ export default function Game() {
     }
 
     try {
-      const regexObj = new RegExp(`^${regex}$`, "i")
+      const regexObj = level?.fullMatch ? new RegExp(`^${regex}$`, "i") : new RegExp(regex, "")
       // const regexObj = new RegExp(regex, "i")
       setRegexError("")
 
-      return level.testStrings.map((item) => ({
-        ...item,
-        matches: regexObj.test(item.text),
-        correct: regexObj.test(item.text) === item.shouldMatch,
-      }))
+      return level.testStrings.map((item) => {
+        return {
+          ...item,
+          matches: regexObj.test(item.text),
+          correct: regexObj.test(item.text) === item.shouldMatch,
+        }
+      })
     } catch (error) {
       setRegexError("Invalid regular expression")
       return level.testStrings.map((item) => ({
@@ -62,13 +64,13 @@ export default function Game() {
       if (currentLevel < levels.length - 1) {
         setCurrentLevel(currentLevel + 1)
         setRegex("")
-        setAttempts(0)
+        // setAttempts(0)
         setShowHint(false)
       } else {
         setGameComplete(true)
       }
     } else {
-      setAttempts(attempts + 1)
+      // setAttempts(attempts + 1)
     }
   }
 
@@ -158,9 +160,14 @@ export default function Game() {
                 />
                 {regexError && <p className="text-sm text-red-500 mt-1">{regexError}</p>}
               </div>
-              <Button onClick={handleSubmit} disabled={!allCorrect || !regex} className="gap-2">
-                {allCorrect ? "Next Level" : "Check"}
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={handleSubmit} disabled={!allCorrect || !regex} className="gap-2">
+                  {allCorrect ? "Next Level" : "Check"}
+                </Button>
+                <Button onClick={() => {
+                  setShowHint(true)
+                }} className="gap-2">Hint</Button>
+              </div>
             </div>
           </div>
 
