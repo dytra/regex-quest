@@ -214,10 +214,10 @@ export default function Component() {
                 <div
                   key={index}
                   className={`flex items-center justify-between p-3 rounded-lg border ${regex && result.correct
-                      ? "bg-green-50 border-green-200"
+                      ? " border-green-200"
                       : regex && !result.correct
-                        ? "bg-red-50 border-red-200"
-                        : "bg-gray-50 border-gray-200"
+                        ? " border-red-200"
+                        : " border-gray-200"
                     }`}
                 >
                   <code className="font-mono text-sm">{result.text}</code>
