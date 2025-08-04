@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -60,7 +60,7 @@ export default function Component() {
 
   const level = levels[currentLevel]
 
-  const checkMatches = () => {
+  const results = useMemo(() => {
     if (!regex) return []
 
     try {
@@ -80,9 +80,8 @@ export default function Component() {
         correct: false,
       }))
     }
-  }
+  }, [regex, level.testStrings])
 
-  const results = checkMatches()
   const allCorrect = results.length > 0 && results.every((r) => r.correct) && regex !== ""
   const correctCount = results.filter((r) => r.correct).length
 
