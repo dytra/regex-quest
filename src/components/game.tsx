@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CheckCircle, XCircle, Target, Trophy, RotateCcw } from "lucide-react"
+import { CheckCircle, XCircle, Target, Trophy, RotateCcw, Lightbulb } from "lucide-react"
 import { ModeToggle } from "./ui/mode-toggle"
 import Image from "next/image";
 import { levels } from "@/lib/levels"
@@ -161,12 +161,14 @@ export default function Game() {
                 {regexError && <p className="text-sm text-red-500 mt-1">{regexError}</p>}
               </div>
               <div className="flex gap-2">
-                <Button onClick={handleSubmit} disabled={!allCorrect || !regex} className="gap-2">
+                <Button onClick={handleSubmit} disabled={!allCorrect || !regex} className="gap-2 cursor-pointer" title="Submit Regex">
                   {allCorrect ? "Next Level" : "Check"}
                 </Button>
                 <Button onClick={() => {
                   setShowHint(true)
-                }} className="gap-2">Hint</Button>
+                }} className="gap-2 cursor-pointer" title="Show Hint">
+                 <Lightbulb /> 
+                </Button>
               </div>
             </div>
           </div>
