@@ -47,7 +47,8 @@ export const levels = [
         description: "Match valid email addresses",
         testStrings: [
             { text: "user@example.com", shouldMatch: true },
-            { text: "test.email@domain.org", shouldMatch: true },
+            { text: "mybabi123@domain.org", shouldMatch: true },
+            // { text: "test.email@domain.org", shouldMatch: true },
             { text: "invalid.email", shouldMatch: false },
             { text: "user@", shouldMatch: false },
             // { text: "another@test.co.uk", shouldMatch: true },
