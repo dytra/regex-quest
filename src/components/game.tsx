@@ -117,7 +117,7 @@ export default function Game() {
       <div className="flex justify-between items-center">
         <div className="flex gap-4">
           <Badge variant="secondary" className="text-sm">
-            Level {currentLevel+1}/{levels.length}
+            Level {currentLevel + 1}/{levels.length}
           </Badge>
           <Badge variant="outline" className="text-sm">Score: {score}</Badge>
           {/* <Badge variant="outline">Attempts: {attempts}</Badge> */}
@@ -167,7 +167,7 @@ export default function Game() {
                 <Button onClick={() => {
                   setShowHint(true)
                 }} className="gap-2 cursor-pointer" title="Show Hint">
-                 <Lightbulb /> 
+                  <Lightbulb />
                 </Button>
               </div>
             </div>
@@ -181,34 +181,7 @@ export default function Game() {
               </div>
             </div>
             <div className="space-y-2">
-              {results.map((result, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center  justify-between flex-wrap p-3 rounded-lg border ${regex && result.correct
-                    ? " border-green-400"
-                    : regex && !result.correct
-                      ? " border-red-400"
-                      : " border-gray-200"
-                    }`}
-                >
-                  <code className="font-mono">{result.text}</code>
-                  <div className="flex items-center gap-2">
-                    <Badge variant={result.shouldMatch ? "default" : "secondary"}>
-                      {result.shouldMatch ? "Should Match" : "Should Not Match"}
-                    </Badge>
-                    {regex && (
-                      <div className="flex items-center gap-1">
-                        {result.matches && <Badge variant="outline">Matches</Badge>}
-                        {result.correct ? (
-                          <CheckCircle className="w-5 h-5 text-green-600" />
-                        ) : (
-                          <XCircle className="w-5 h-5 text-red-600" />
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
+              <TestStrings regex={regex} results={results} />
             </div>
           </div>
 
@@ -236,5 +209,54 @@ export default function Game() {
         </p>
       </div>
     </div>
+  )
+}
+
+type TestString = {
+  text: string
+  shouldMatch: boolean
+  matches: boolean
+  correct: boolean
+}
+type TestStringsProps = {
+  regex: string
+  results: TestString[]
+}
+const TestStrings = ({
+  regex,
+  results,
+}: TestStringsProps
+) => {
+  return (
+    <>
+      {results.map((result, index) => (
+        <div
+          key={index}
+          className={`flex items-center  justify-between flex-wrap p-3 rounded-lg border ${regex && result.correct
+            ? " border-green-400"
+            : regex && !result.correct
+              ? " border-red-400"
+              : " border-gray-200"
+            }`}
+        >
+          <code className="font-mono">{result.text}</code>
+          <div className="flex items-center gap-2">
+            <Badge variant={result.shouldMatch ? "default" : "secondary"}>
+              {result.shouldMatch ? "Should Match" : "Should Not Match"}
+            </Badge>
+            {regex && (
+              <div className="flex items-center gap-1">
+                {result.matches && <Badge variant="outline">Matches</Badge>}
+                {result.correct ? (
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                ) : (
+                  <XCircle className="w-5 h-5 text-red-600" />
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+    </>
   )
 }
