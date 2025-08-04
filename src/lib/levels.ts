@@ -1,5 +1,47 @@
 export const levels = [
     {
+        id: 101,
+        title: "Match the Word 'cat'",
+        description: "Find the exact word 'cat'",
+        testStrings: [
+            { text: "cat", shouldMatch: true },
+            { text: "The cat sat on the mat", shouldMatch: true },
+            // { text: "concatenate", shouldMatch: false },
+            { text: "Cat", shouldMatch: true }, // case-insensitive
+            { text: "dog", shouldMatch: false },
+        ],
+        hint: "Just match the exact word 'cat'. Remember it's case-insensitive.",
+        fullMatch: false,
+    },
+    {
+        id: 102,
+        title: "Digits Only",
+        description: "Match strings that contain only numbers",
+        fullMatch: true,
+        testStrings: [
+            { text: "123456", shouldMatch: true },
+            { text: "0", shouldMatch: true },
+            { text: "123abc", shouldMatch: false },
+            { text: "42!", shouldMatch: false },
+            { text: "   789", shouldMatch: false },
+        ],
+        hint: "Use \\d to match digits. Use ^ and $ to match the entire string.",
+    },
+    {
+        id: 103,
+        title: "Starts With Capital",
+        description: "Match strings that start with a capital letter",
+        fullMatch: false,
+        testStrings: [
+            { text: "Hello world", shouldMatch: true },
+            { text: "This is great", shouldMatch: true },
+            { text: "nope", shouldMatch: false },
+            { text: "what about this?", shouldMatch: false },
+            { text: "OK!", shouldMatch: true },
+        ],
+        hint: "Use ^[A-Z] to match the first character of the string.",
+    },
+    {
         id: 1,
         title: "Email Validation",
         description: "Match valid email addresses",
@@ -8,9 +50,10 @@ export const levels = [
             { text: "test.email@domain.org", shouldMatch: true },
             { text: "invalid.email", shouldMatch: false },
             { text: "user@", shouldMatch: false },
-            { text: "another@test.co.uk", shouldMatch: true },
+            // { text: "another@test.co.uk", shouldMatch: true },
         ],
         hint: "Look for patterns like: characters @ characters . characters",
+        fullMatch: true,
     },
     {
         id: 2,
@@ -24,6 +67,7 @@ export const levels = [
             { text: "(123) 456-7890", shouldMatch: true },
         ],
         hint: "Pattern: (digits) digits-digits",
+        fullMatch: true,
     },
     {
         id: 3,
@@ -37,6 +81,7 @@ export const levels = [
             { text: "#abc123", shouldMatch: true },
         ],
         hint: "Hex colors start with # followed by 6 hex digits (0-9, A-F)",
+        fullMatch: true,
     },
     {
         id: 4,
@@ -50,6 +95,7 @@ export const levels = [
             { text: "2025-8-4", shouldMatch: false },
         ],
         hint: "Use \\d{4}-\\d{2}-\\d{2} to match YYYY-MM-DD format",
+        fullMatch: true,
     },
     {
         id: 5,
@@ -63,6 +109,7 @@ export const levels = [
             { text: "contains spaces", shouldMatch: false },
         ],
         hint: "Use ^[a-z0-9-]+$ to match lowercase slugs",
+        fullMatch: true,
     },
     {
         id: 6,
@@ -76,6 +123,7 @@ export const levels = [
             { text: "abcd efgh ijkl mnop", shouldMatch: false },
         ],
         hint: "Each group has 4 digits separated by a space",
+        fullMatch: true,
     },
     {
         id: 7,
@@ -89,6 +137,7 @@ export const levels = [
             { text: "3,14", shouldMatch: false },
         ],
         hint: "Optional sign (+/-), digits, a dot, then digits",
+        fullMatch: true,
     },
     {
         id: 8,
@@ -102,6 +151,7 @@ export const levels = [
             { text: "<<p>>", shouldMatch: false },
         ],
         hint: "Use angle brackets and optional slash",
+        fullMatch: true,
     },
     {
         id: 9,
@@ -115,6 +165,7 @@ export const levels = [
             { text: "NOspecial123", shouldMatch: false },
         ],
         hint: "Look into lookaheads for multiple requirements",
+        fullMatch: true,
     },
     {
         id: 10,
@@ -128,5 +179,6 @@ export const levels = [
             { text: "abc.def.ghi.jkl", shouldMatch: false },
         ],
         hint: "Use \\d{1,3}(\\.\\d{1,3}){3} and later validate range if needed",
+        fullMatch: true,
     },
 ]
