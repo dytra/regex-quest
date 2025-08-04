@@ -11,6 +11,7 @@ import Image from "next/image";
 import { Level, levels } from "@/lib/levels"
 import Link from "next/link"
 import { motion } from "motion/react"
+import { toast } from "sonner"
 
 export default function Game() {
   const [currentLevel, setCurrentLevel] = useState(0)
@@ -67,6 +68,10 @@ export default function Game() {
         setRegex("")
         // setAttempts(0)
         setShowHint(false)
+        toast.success("Correct!", {
+          richColors: true,
+          duration:3000
+        })
       } else {
         setGameComplete(true)
       }
