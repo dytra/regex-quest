@@ -259,7 +259,7 @@ export default function Game() {
       </Card>
 
       <div className="text-center text-sm text-muted-foreground">
-        <p>Create a regular expression that matches the correct strings and rejects the incorrect ones.</p>
+        <p>Copyright &copy; {new Date().getFullYear()} by <a href="https://dytra.github.io" target="_blank" rel="noreferrer">dytra</a>. All rights reserved.</p>
       </div>
     </div>
   )
