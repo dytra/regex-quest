@@ -70,7 +70,7 @@ export default function Game() {
         setShowHint(false)
         toast.success("Correct!", {
           richColors: true,
-          duration:3000
+          duration: 3000
         })
       } else {
         setGameComplete(true)
@@ -160,6 +160,14 @@ export default function Game() {
                     if (e.key === "Enter" && allCorrect && regex) {
                       handleSubmit()
                     }
+                  }}
+                  onPaste={(e: React.ClipboardEvent<HTMLInputElement>) => {
+                    e.preventDefault();
+                    toast.error("Oops, no cheating!", {
+                      description: "Pasting regex is not allowed. Please type it out.",
+                      richColors: true,
+                      duration: 2000
+                    })
                   }}
                   placeholder="Enter regex pattern..."
                   className={`font-mono ${regexError ? "border-red-500" : ""}`}
