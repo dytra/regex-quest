@@ -86,7 +86,7 @@ export default function Game() {
 
   if (gameComplete) {
     return (
-      <div className="max-w-2xl mx-auto p-6 space-y-6">
+      <div className="max-w-2xl mx-auto p-3 space-y-6">
         <Card className="text-center">
           <CardHeader>
             <div className="flex justify-center mb-4">
@@ -110,7 +110,7 @@ export default function Game() {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <div className="text-center space-y-2">
-        <Link href={"/"}><h1 className="text-3xl font-bold">RegEx Quest <Image src={"/sword.png"} className="inline w-10 h-10 image-crisp" alt={"sword regex game pixel art"} width={50} height={50} /></h1></Link>
+        <Link href={"/"}><h1 className="text-3xl font-bold">RegEx Quest <Image src={"/sword.png"} className="inline w-8 h-8 image-crisp relative bottom-1" alt={"sword regex game pixel art"} width={50} height={50} /></h1></Link>
         <p className="text-muted-foreground">Master regular expresssions through interactive challenges</p>
       </div>
 
@@ -120,7 +120,7 @@ export default function Game() {
             Level {currentLevel+1}/{levels.length}
           </Badge>
           <Badge variant="outline">Score: {score}</Badge>
-          <Badge variant="outline">Attempts: {attempts}</Badge>
+          {/* <Badge variant="outline">Attempts: {attempts}</Badge> */}
         </div>
         <div>
           <Button variant="ghost" onClick={resetGame} size="sm" className="gap-2">
