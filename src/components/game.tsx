@@ -9,6 +9,7 @@ import { CheckCircle, XCircle, Target, Trophy, RotateCcw } from "lucide-react"
 import { ModeToggle } from "./ui/mode-toggle"
 import Image from "next/image";
 import { levels } from "@/lib/levels"
+import Link from "next/link"
 
 export default function Game() {
   const [currentLevel, setCurrentLevel] = useState(0)
@@ -107,7 +108,7 @@ export default function Game() {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold">RegEx Quest <Image src={"/sword.png"} className="inline w-10 h-10 image-crisp" alt={"sword regex game pixel art"} width={50} height={50} /></h1>
+        <Link href={"/"}><h1 className="text-3xl font-bold">RegEx Quest <Image src={"/sword.png"} className="inline w-10 h-10 image-crisp" alt={"sword regex game pixel art"} width={50} height={50} /></h1></Link>
         <p className="text-muted-foreground">Master regular expresssions through interactive challenges</p>
       </div>
 
