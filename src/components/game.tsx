@@ -117,7 +117,7 @@ export default function Game() {
       <div className="flex justify-between items-center">
         <div className="flex gap-4">
           <Badge variant="secondary">
-            Level {level.id}/{levels.length}
+            Level {currentLevel+1}/{levels.length}
           </Badge>
           <Badge variant="outline">Score: {score}</Badge>
           <Badge variant="outline">Attempts: {attempts}</Badge>
