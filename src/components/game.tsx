@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle, XCircle, Target, Trophy, RotateCcw } from "lucide-react"
+import { ModeToggle } from "./ui/mode-toggle"
 
 const levels = [
   {
@@ -157,10 +158,13 @@ export default function Component() {
           <Badge variant="outline">Score: {score}</Badge>
           <Badge variant="outline">Attempts: {attempts}</Badge>
         </div>
-        <Button variant="ghost" onClick={resetGame} size="sm" className="gap-2">
-          <RotateCcw className="w-4 h-4" />
-          Reset
-        </Button>
+        <div>
+          <ModeToggle />
+          <Button variant="ghost" onClick={resetGame} size="sm" className="gap-2">
+            <RotateCcw className="w-4 h-4" />
+            Reset
+          </Button>
+        </div>
       </div>
 
       <Card>
@@ -209,13 +213,12 @@ export default function Component() {
               {results.map((result, index) => (
                 <div
                   key={index}
-                  className={`flex items-center justify-between p-3 rounded-lg border ${
-                    regex && result.correct
+                  className={`flex items-center justify-between p-3 rounded-lg border ${regex && result.correct
                       ? "bg-green-50 border-green-200"
                       : regex && !result.correct
                         ? "bg-red-50 border-red-200"
                         : "bg-gray-50 border-gray-200"
-                  }`}
+                    }`}
                 >
                   <code className="font-mono text-sm">{result.text}</code>
                   <div className="flex items-center gap-2">
