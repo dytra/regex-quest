@@ -10,6 +10,7 @@ import { ModeToggle } from "./ui/mode-toggle"
 import Image from "next/image";
 import { levels } from "@/lib/levels"
 import Link from "next/link"
+import { motion } from "motion/react"
 
 export default function Game() {
   const [currentLevel, setCurrentLevel] = useState(0)
@@ -230,13 +231,20 @@ const TestStrings = ({
   return (
     <>
       {results.map((result, index) => (
-        <div
-          key={index}
-          className={`flex items-center  justify-between flex-wrap p-3 rounded-lg border ${regex && result.correct
-            ? " border-green-400"
-            : regex && !result.correct
-              ? " border-red-400"
-              : " border-gray-200"
+        <motion.div
+          key={`result-${index}`}
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{
+            duration: 0.4,
+            delay: index * 0.1, // staggered animation
+            ease: "easeOut"
+          }}
+          className={`flex items-center justify-between flex-wrap p-3 rounded-lg border ${regex && result.correct
+              ? " border-green-400"
+              : regex && !result.correct
+                ? " border-red-400"
+                : " border-gray-200"
             }`}
         >
           <code className="font-mono">{result.text}</code>
@@ -255,7 +263,7 @@ const TestStrings = ({
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
       ))}
     </>
   )
