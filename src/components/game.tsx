@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle, XCircle, Target, Trophy, RotateCcw } from "lucide-react"
 import { ModeToggle } from "./ui/mode-toggle"
+import Image from "next/image";
 
 const levels = [
   {
@@ -146,8 +147,8 @@ export default function Component() {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold">RegEx Quest</h1>
-        <p className="text-muted-foreground">Master RegEx through interactive challenges</p>
+        <h1 className="text-3xl font-bold">RegEx Quest <Image src={"/sword.png"} className="inline w-10 h-10 image-crisp" alt={"sword regex game pixel art"} width={50} height={50} /></h1>
+        <p className="text-muted-foreground">Master regular expresssions through interactive challenges</p>
       </div>
 
       <div className="flex justify-between items-center">
