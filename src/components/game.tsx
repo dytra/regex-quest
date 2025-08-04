@@ -178,7 +178,7 @@ export default function Game() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <label htmlFor="regex" className="text-sm font-medium">
+            <label htmlFor="regex" className=" font-medium mb-1">
               Enter your regular expression:
             </label>
             <div className="flex gap-2">
