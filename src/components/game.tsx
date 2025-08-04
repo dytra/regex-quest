@@ -61,7 +61,13 @@ export default function Component() {
   const level = levels[currentLevel]
 
   const results = useMemo(() => {
-    if (!regex) return []
+    if (!regex) {
+      return level.testStrings.map((item) => ({
+        ...item,
+        matches: false,
+        correct: false,
+      }))
+    }
 
     try {
       const regexObj = new RegExp(regex, "i")
@@ -199,9 +205,9 @@ export default function Component() {
                 <div
                   key={index}
                   className={`flex items-center justify-between p-3 rounded-lg border ${
-                    result.correct
+                    regex && result.correct
                       ? "bg-green-50 border-green-200"
-                      : regex
+                      : regex && !result.correct
                         ? "bg-red-50 border-red-200"
                         : "bg-gray-50 border-gray-200"
                   }`}
@@ -216,9 +222,9 @@ export default function Component() {
                         {result.matches && <Badge variant="outline">Matches</Badge>}
                         {result.correct ? (
                           <CheckCircle className="w-5 h-5 text-green-600" />
-                        ) : regex ? (
+                        ) : (
                           <XCircle className="w-5 h-5 text-red-600" />
-                        ) : null}
+                        )}
                       </div>
                     )}
                   </div>
