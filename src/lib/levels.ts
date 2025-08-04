@@ -10,7 +10,7 @@ export const levels = [
             { text: "Cat", shouldMatch: true }, // case-insensitive
             { text: "dog", shouldMatch: false },
         ],
-        hint: "Just match the exact word 'cat'. Remember it's case-insensitive.",
+        hint: "Just match the exact word 'cat'. Remember it's case sensitive.",
         fullMatch: false,
     },
     {
