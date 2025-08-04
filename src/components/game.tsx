@@ -182,6 +182,11 @@ export default function Component() {
                   id="regex"
                   value={regex}
                   onChange={(e) => setRegex(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && allCorrect && regex) {
+                      handleSubmit()
+                    }
+                  }}
                   placeholder="Enter regex pattern..."
                   className={`font-mono ${regexError ? "border-red-500" : ""}`}
                 />
