@@ -26,8 +26,8 @@ const vt323 = VT323({
 });
 
 export const metadata: Metadata = {
-  title: "regex quest",
-  description: "regex game",
+  title: "RegEx Quest",
+  description: "an interactive regex game",
   icons: [
     { url: '/favicon.ico', type: 'image/x-icon' },
     { url: '/favicon.png', type: 'image/png' },
