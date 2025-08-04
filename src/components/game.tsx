@@ -31,7 +31,8 @@ export default function Game() {
     }
 
     try {
-      const regexObj = new RegExp(regex, "i")
+      const regexObj = new RegExp(`^${regex}$`, "i")
+      // const regexObj = new RegExp(regex, "i")
       setRegexError("")
 
       return level.testStrings.map((item) => ({
