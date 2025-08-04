@@ -214,7 +214,7 @@ export default function Game() {
               {results.map((result, index) => (
                 <div
                   key={index}
-                  className={`flex items-center justify-between p-3 rounded-lg border ${regex && result.correct
+                  className={`flex items-center  justify-between flex-wrap p-3 rounded-lg border ${regex && result.correct
                     ? " border-green-200"
                     : regex && !result.correct
                       ? " border-red-200"
