@@ -1,4 +1,4 @@
-# Regex Quest 🗡️
+# Regex Quest 
 
 **Regex Quest** is a fun and interactive mini-game built with  to help you sharpening your regular expression (regex) skills!
 
