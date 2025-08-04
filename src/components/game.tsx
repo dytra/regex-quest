@@ -51,7 +51,7 @@ const levels = [
   },
 ]
 
-export default function Component() {
+export default function Game() {
   const [currentLevel, setCurrentLevel] = useState(0)
   const [regex, setRegex] = useState("")
   const [score, setScore] = useState(0)
@@ -160,11 +160,11 @@ export default function Component() {
           <Badge variant="outline">Attempts: {attempts}</Badge>
         </div>
         <div>
-          <ModeToggle />
           <Button variant="ghost" onClick={resetGame} size="sm" className="gap-2">
             <RotateCcw className="w-4 h-4" />
             Reset
           </Button>
+          <ModeToggle />
         </div>
       </div>
 
@@ -215,10 +215,10 @@ export default function Component() {
                 <div
                   key={index}
                   className={`flex items-center justify-between p-3 rounded-lg border ${regex && result.correct
-                      ? " border-green-200"
-                      : regex && !result.correct
-                        ? " border-red-200"
-                        : " border-gray-200"
+                    ? " border-green-200"
+                    : regex && !result.correct
+                      ? " border-red-200"
+                      : " border-gray-200"
                     }`}
                 >
                   <code className="font-mono text-sm">{result.text}</code>
