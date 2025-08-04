@@ -183,3 +183,5 @@ export const levels = [
         fullMatch: true,
     },
 ]
+
+export type Level = typeof levels[number]
