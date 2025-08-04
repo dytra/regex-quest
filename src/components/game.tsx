@@ -215,9 +215,9 @@ export default function Game() {
                 <div
                   key={index}
                   className={`flex items-center  justify-between flex-wrap p-3 rounded-lg border ${regex && result.correct
-                    ? " border-green-200"
+                    ? " border-green-400"
                     : regex && !result.correct
-                      ? " border-red-200"
+                      ? " border-red-400"
                       : " border-gray-200"
                     }`}
                 >
