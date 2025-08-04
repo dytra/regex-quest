@@ -116,10 +116,10 @@ export default function Game() {
 
       <div className="flex justify-between items-center">
         <div className="flex gap-4">
-          <Badge variant="secondary">
+          <Badge variant="secondary" className="text-sm">
             Level {currentLevel+1}/{levels.length}
           </Badge>
-          <Badge variant="outline">Score: {score}</Badge>
+          <Badge variant="outline" className="text-sm">Score: {score}</Badge>
           {/* <Badge variant="outline">Attempts: {attempts}</Badge> */}
         </div>
         <div>
