@@ -229,7 +229,7 @@ export default function Game() {
       <div className="text-center text-sm text-muted-foreground">
         <p>
           Copyright &copy; {new Date().getFullYear()} by{' '}
-          <a href="https://dytra.github.io" target="_blank" rel="noreferrer">dytra</a>.{' '}
+          <a href="https://github.com/dytra" target="_blank" rel="noreferrer">dytra</a>.{' '}
           All rights reserved.
         </p>
       </div>
