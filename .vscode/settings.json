@@ -1,9 +1,17 @@
 {
     "editor.defaultFormatter": "vscode.typescript-language-features",
     "[typescriptreact]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
+        "editor.defaultFormatter": "vscode.typescript-language-features",
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
     },
     "[typescript]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
+        "editor.defaultFormatter": "vscode.typescript-language-features",
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
     },
+    "editor.detectIndentation": false,
+    "editor.indentSize": "tabSize",
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
 }

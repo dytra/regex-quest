@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Pixelify_Sans, VT323 } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,8 +27,9 @@ const vt323 = VT323({
 });
 
 export const metadata: Metadata = {
-  title: "RegEx Quest",
-  description: "an interactive regex game",
+  title: "RegEx Quest - Learn Regex Interactively",
+  description: "Master regular expressions through fun and interactive challenges. Play RegEx Quest and improve your coding skills!",
+  keywords:"regex,learn regex,interactive regex, regex game,regex challenges",
   icons: [
     { url: '/favicon.ico', type: 'image/x-icon' },
     { url: '/favicon.png', type: 'image/png' },
@@ -52,7 +54,8 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
-         <Toaster />
+        <Toaster />
+        <Analytics />
       </body>
     </html>
   );

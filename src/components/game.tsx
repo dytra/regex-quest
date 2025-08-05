@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,19 +10,27 @@ import { ModeToggle } from "./ui/mode-toggle"
 import Image from "next/image";
 import { Level, levels } from "@/lib/levels"
 import Link from "next/link"
+import HighlightedRegexText from "./highlighted-regex-text"
 import { motion } from "motion/react"
 import { toast } from "sonner"
+import { getRandomPraise } from "@/lib/praiseMessages"
+import CountUpTimer from "./CountUpTimer"
 
 export default function Game() {
   const [currentLevel, setCurrentLevel] = useState(0)
-  const [regex, setRegex] = useState("")
+  const [regex, setRegex] = useState("");
+  const [regexObj, setRegexObj] = useState<RegExp | null>(null);
   const [score, setScore] = useState(0)
   const [attempts, setAttempts] = useState(0)
   const [showHint, setShowHint] = useState(false)
   const [gameComplete, setGameComplete] = useState(false)
   const [regexError, setRegexError] = useState("")
+  const [seconds, setSeconds] = useState(0);
+  const sfxPopRef = useRef<HTMLAudioElement | null>(null)
+  const sfxVictoryRef = useRef<HTMLAudioElement | null>(null)
 
-  const level = levels[currentLevel]
+
+  const level = levels[currentLevel];
 
   const results = useMemo(() => {
     if (!regex) {
@@ -37,14 +45,27 @@ export default function Game() {
       const regexObj = level?.fullMatch ? new RegExp(`^${regex}$`, "i") : new RegExp(regex, "")
       // const regexObj = new RegExp(regex, "i")
       setRegexError("")
-
+      setRegexObj(level?.fullMatch ? new RegExp(`${regex}`, "i") : new RegExp(regex, ""));
       return level.testStrings.map((item) => {
+        const match = item.text.match(regexObj);
+
+        // Validate match manually
+        const matchedString = match?.[0] ?? "";
+        const shouldFullMatch = level?.fullMatch;
+
+        let matches = !!match;
+        let correct = matches === item.shouldMatch;
+
+        if (level?.requiredWord) {
+          correct = matchedString.includes(level.requiredWord);
+        }
+
         return {
           ...item,
-          matches: regexObj.test(item.text),
-          correct: regexObj.test(item.text) === item.shouldMatch,
-        }
-      })
+          matches,
+          correct,
+        };
+      });
     } catch (error) {
       setRegexError("Invalid regular expression")
       return level.testStrings.map((item) => ({
@@ -58,6 +79,8 @@ export default function Game() {
   const allCorrect = results.length > 0 && results.every((r) => r.correct) && regex !== ""
   const correctCount = results.filter((r) => r.correct).length
 
+
+
   const handleSubmit = () => {
     if (allCorrect) {
       const points = Math.max(100 - attempts * 10, 10)
@@ -68,10 +91,13 @@ export default function Game() {
         setRegex("")
         // setAttempts(0)
         setShowHint(false)
-        toast.success("Correct!", {
+        toast.success(getRandomPraise(), {
           richColors: true,
           duration: 3000
         })
+        const sound = new Audio('/correct.mp3'); // Make sure the path is correct
+        sound.volume = .35;
+        sound.play();
       } else {
         setGameComplete(true)
       }
@@ -83,12 +109,40 @@ export default function Game() {
   const resetGame = () => {
     setCurrentLevel(0)
     setRegex("")
+    setRegexObj(null);
     setScore(0)
     setAttempts(0)
     setShowHint(false)
     setGameComplete(false)
     setRegexError("")
   }
+
+
+  useEffect(() => {
+    sfxPopRef.current = new Audio('/pop.mp3')
+    sfxPopRef.current.volume = 0.35
+  }, [])
+  useEffect(() => {
+    sfxVictoryRef.current = new Audio('/victory.mp3')
+    // sfxVictoryRef.current.volume = 0.35
+  }, [])
+
+  useEffect(() => {
+    if (!allCorrect || !sfxPopRef.current) return;
+    sfxPopRef.current.currentTime = 0
+    sfxPopRef.current.play().catch((e) => {
+      console.error("play() failed:", e)
+    })
+  }, [allCorrect])
+
+
+  useEffect(() => {
+    if (!gameComplete || !sfxVictoryRef.current) return;
+    sfxVictoryRef.current.currentTime = 0
+    sfxVictoryRef.current.play().catch((e) => {
+      console.error("play() failed:", e)
+    })
+  }, [gameComplete])
 
   if (gameComplete) {
     return (
@@ -99,11 +153,12 @@ export default function Game() {
               <Trophy className="w-16 h-16 text-yellow-500" />
             </div>
             <CardTitle className="text-2xl">Congratulations!</CardTitle>
-            <CardDescription>You've completed all regex challenges!</CardDescription>
+            <CardDescription>You've completed all of the ReGex challenges!</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-green-600 mb-4">Final Score: {score}</div>
-            <Button onClick={resetGame} className="gap-2">
+            <div className="text-3xl font-bold text-green-600 mb-4">Time Elapsed: {seconds} seconds</div>
+            <Button onClick={resetGame} className="gap-2 cursor-pointer">
               <RotateCcw className="w-4 h-4" />
               Play Again
             </Button>
@@ -114,11 +169,8 @@ export default function Game() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-3 space-y-6">
-      <div className="text-center space-y-2">
-        <Link href={"/"}><h1 className="text-3xl font-bold">RegEx Quest <Image src={"/sword.png"} className="inline w-8 h-8 image-crisp relative bottom-1" alt={"sword regex game pixel art"} width={50} height={50} /></h1></Link>
-        <p className="text-muted-foreground">Master regular expresssions through interactive challenges</p>
-      </div>
+    <>
+
 
       <div className="flex justify-between items-center">
         <div className="flex gap-4">
@@ -126,6 +178,9 @@ export default function Game() {
             Level {currentLevel + 1}/{levels.length}
           </Badge>
           <Badge variant="outline" className="text-sm">Score: {score}</Badge>
+          <Badge variant="outline" className="text-sm">
+            <CountUpTimer seconds={seconds} setSeconds={setSeconds} />
+          </Badge>
           {/* <Badge variant="outline">Attempts: {attempts}</Badge> */}
         </div>
         <div>
@@ -150,12 +205,18 @@ export default function Game() {
             <label htmlFor="regex" className=" font-medium mb-1">
               Enter your regular expression:
             </label>
-            <div className="flex gap-2">
+
+            <div className="flex flex-col md:flex-row gap-2">
               <div className="flex-1 relative">
                 <Input
                   id="regex"
                   value={regex}
-                  onChange={(e) => setRegex(e.target.value)}
+                  onChange={(e) => {
+                    if (!e.target.value) {
+                      setRegexObj(null);
+                    }
+                    setRegex(e.target.value);
+                  }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && allCorrect && regex) {
                       handleSubmit()
@@ -171,12 +232,13 @@ export default function Game() {
                   }}
                   placeholder="Enter regex pattern..."
                   className={`font-mono ${regexError ? "border-red-500" : ""}`}
+                  autoComplete="off"
                 />
                 {regexError && <p className="text-sm text-red-500 mt-1">{regexError}</p>}
               </div>
               <div className="flex gap-2">
                 <Button onClick={handleSubmit} disabled={!allCorrect || !regex} className="gap-2 cursor-pointer" title="Submit Regex">
-                  {allCorrect ? "Next Level" : "Check"}
+                  Next
                 </Button>
                 <Button onClick={() => {
                   setShowHint(true)
@@ -185,6 +247,9 @@ export default function Game() {
                 </Button>
               </div>
             </div>
+            {/* <Button onClick={() => {
+              setGameComplete(true);
+            }}>Victory</Button> */}
           </div>
 
           <div className="space-y-2">
@@ -195,7 +260,7 @@ export default function Game() {
               </div>
             </div>
             <div className="space-y-2">
-              <TestStrings regex={regex} results={results} level={level} />
+              <TestStrings regex={regex} results={results} level={level} regexObj={regexObj} />
             </div>
           </div>
 
@@ -222,7 +287,7 @@ export default function Game() {
           All rights reserved.
         </p>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -236,11 +301,13 @@ type TestStringsProps = {
   regex: string
   results: TestString[]
   level: Level
+  regexObj?: RegExp | null
 }
 const TestStrings = ({
   regex,
   results,
   level,
+  regexObj,
 }: TestStringsProps
 ) => {
   return (
@@ -266,7 +333,13 @@ const TestStrings = ({
               : " border-gray-200"
             }`}
         >
-          <code className="font-mono">{result.text}</code>
+          <code className="font-mono">
+            <HighlightedRegexText
+              text={result.text}
+              regex={regexObj ? new RegExp(regexObj.source, regexObj.flags + "g") : null}
+            />
+          </code>
+          {/* <code className="font-mono">{result.text}</code> */}
           <div className="flex items-center gap-2">
             <Badge variant={result.shouldMatch ? "default" : "secondary"}>
               {result.shouldMatch ? "Should Match" : "Should Not Match"}
