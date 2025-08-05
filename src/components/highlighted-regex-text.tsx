@@ -2,7 +2,7 @@
 
 interface HighlightedRegexTextProps {
   text: string;
-  regex?: RegExp;
+  regex?: RegExp | null;
 }
 
 const HighlightedRegexText: React.FC<HighlightedRegexTextProps> = ({
