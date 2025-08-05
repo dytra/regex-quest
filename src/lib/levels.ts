@@ -136,7 +136,7 @@ export const levels:Level[] = [
       { text: "my-cool-blog-post", shouldMatch: true },
       { text: "hello-world-123", shouldMatch: true },
       { text: "not_valid_slug!", shouldMatch: false },
-      { text: "UPPERCASE", shouldMatch: false },
+      // { text: "UPPERCASE", shouldMatch: false },
       { text: "contains spaces", shouldMatch: false },
     ],
     hint: "Use ^[a-z0-9-]+$ to match lowercase slugs",
