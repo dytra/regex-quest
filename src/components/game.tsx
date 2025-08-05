@@ -159,7 +159,7 @@ export default function Game() {
                   id="regex"
                   value={regex}
                   onChange={(e) => {
-                    if(!e.target.value) {
+                    if (!e.target.value) {
                       setRegexObj(null);
                     }
                     setRegex(e.target.value);
@@ -203,7 +203,7 @@ export default function Game() {
               </div>
             </div>
             <div className="space-y-2">
-              <TestStrings regex={regex} results={results} level={level} />
+              <TestStrings regex={regex} results={results} level={level} regexObj={regexObj} />
             </div>
           </div>
 
@@ -244,11 +244,13 @@ type TestStringsProps = {
   regex: string
   results: TestString[]
   level: Level
+  regexObj?: RegExp | null
 }
 const TestStrings = ({
   regex,
   results,
   level,
+  regexObj,
 }: TestStringsProps
 ) => {
   return (
@@ -274,7 +276,13 @@ const TestStrings = ({
               : " border-gray-200"
             }`}
         >
-          <code className="font-mono">{result.text}</code>
+          <code className="font-mono">
+            <HighlightedRegexText
+              text={result.text}
+              regex={regexObj ? new RegExp(regexObj.source, regexObj.flags + "g") : null}
+            />
+          </code>
+          {/* <code className="font-mono">{result.text}</code> */}
           <div className="flex items-center gap-2">
             <Badge variant={result.shouldMatch ? "default" : "secondary"}>
               {result.shouldMatch ? "Should Match" : "Should Not Match"}
