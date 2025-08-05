@@ -21,7 +21,7 @@ export default function Game() {
   const [score, setScore] = useState(0)
   const [attempts, setAttempts] = useState(0)
   const [showHint, setShowHint] = useState(false)
-  const [gameComplete, setGameComplete] = useState(false)
+  const [gameComplete, setGameComplete] = useState(true)
   const [regexError, setRegexError] = useState("")
 
   const level = levels[currentLevel]
@@ -60,13 +60,8 @@ export default function Game() {
 
   const allCorrect = results.length > 0 && results.every((r) => r.correct) && regex !== ""
   const correctCount = results.filter((r) => r.correct).length
-  
-  useEffect(() => {
-    if(!allCorrect) return;
-    const popSound = new Audio('/pop.mp3'); // Make sure the path is correct
-    // popSound.volume = .35;
-    popSound.play();
-  },[allCorrect])
+
+
 
   const handleSubmit = () => {
     if (allCorrect) {
@@ -102,6 +97,7 @@ export default function Game() {
     setGameComplete(false)
     setRegexError("")
   }
+
 
   if (gameComplete) {
     return (
