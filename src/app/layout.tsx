@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Pixelify_Sans,VT323 } from "next/font/google";
+import { Geist, Geist_Mono, Pixelify_Sans, VT323 } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,12 +22,16 @@ const pixelifySans = Pixelify_Sans({
 const vt323 = VT323({
   variable: "--font-vt323",
   subsets: ["latin"],
-  weight:"400",
+  weight: "400",
 });
 
 export const metadata: Metadata = {
-  title: "regex quest",
-  description: "regex game",
+  title: "RegEx Quest",
+  description: "an interactive regex game",
+  icons: [
+    { url: '/favicon.ico', type: 'image/x-icon' },
+    { url: '/favicon.png', type: 'image/png' },
+  ],
 };
 
 export default function RootLayout({
@@ -47,6 +52,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+         <Toaster />
       </body>
     </html>
   );

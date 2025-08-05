@@ -5,12 +5,14 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CheckCircle, XCircle, Target, Trophy, RotateCcw } from "lucide-react"
+import { CheckCircle, XCircle, Target, Trophy, RotateCcw, Lightbulb } from "lucide-react"
 import { ModeToggle } from "./ui/mode-toggle"
 import Image from "next/image";
-import { levels } from "@/lib/levels"
+import { Level, levels } from "@/lib/levels"
 import Link from "next/link"
 import HighlightedRegexText from "./highlighted-regex-text"
+import { motion } from "motion/react"
+import { toast } from "sonner"
 
 export default function Game() {
   const [currentLevel, setCurrentLevel] = useState(0)
@@ -69,6 +71,10 @@ export default function Game() {
         setRegex("")
         // setAttempts(0)
         setShowHint(false)
+        toast.success("Correct!", {
+          richColors: true,
+          duration: 3000
+        })
       } else {
         setGameComplete(true)
       }
@@ -89,7 +95,7 @@ export default function Game() {
 
   if (gameComplete) {
     return (
-      <div className="max-w-2xl mx-auto p-6 space-y-6">
+      <div className="max-w-2xl mx-auto p-3 space-y-6">
         <Card className="text-center">
           <CardHeader>
             <div className="flex justify-center mb-4">
@@ -111,19 +117,19 @@ export default function Game() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div className="max-w-4xl mx-auto p-3 space-y-6">
       <div className="text-center space-y-2">
-        <Link href={"/"}><h1 className="text-3xl font-bold">RegEx Quest <Image src={"/sword.png"} className="inline w-10 h-10 image-crisp" alt={"sword regex game pixel art"} width={50} height={50} /></h1></Link>
+        <Link href={"/"}><h1 className="text-3xl font-bold">RegEx Quest <Image src={"/sword.png"} className="inline w-8 h-8 image-crisp relative bottom-1" alt={"sword regex game pixel art"} width={50} height={50} /></h1></Link>
         <p className="text-muted-foreground">Master regular expresssions through interactive challenges</p>
       </div>
 
       <div className="flex justify-between items-center">
         <div className="flex gap-4">
-          <Badge variant="secondary">
+          <Badge variant="secondary" className="text-sm">
             Level {currentLevel + 1}/{levels.length}
           </Badge>
-          <Badge variant="outline">Score: {score}</Badge>
-          <Badge variant="outline">Attempts: {attempts}</Badge>
+          <Badge variant="outline" className="text-sm">Score: {score}</Badge>
+          {/* <Badge variant="outline">Attempts: {attempts}</Badge> */}
         </div>
         <div>
           <Button variant="ghost" onClick={resetGame} size="sm" className="gap-2">
@@ -134,15 +140,15 @@ export default function Game() {
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
+      <Card className="py-4">
+        <CardHeader className="px-4">
           <CardTitle className="flex items-center gap-2">
             <Target className="w-5 h-5" />
             {level.title}
           </CardTitle>
           <CardDescription>{level.description}</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 px-4">
           <div className="space-y-2">
             <label htmlFor="regex" className=" font-medium mb-1">
               Enter your regular expression:
@@ -163,18 +169,28 @@ export default function Game() {
                       handleSubmit()
                     }
                   }}
+                  onPaste={(e: React.ClipboardEvent<HTMLInputElement>) => {
+                    e.preventDefault();
+                    toast.error("Oops, no cheating!", {
+                      description: "Pasting regex is not allowed. Please type it out.",
+                      richColors: true,
+                      duration: 2000
+                    })
+                  }}
                   placeholder="Enter regex pattern..."
                   className={`font-mono ${regexError ? "border-red-500" : ""}`}
                 />
                 {regexError && <p className="text-sm text-red-500 mt-1">{regexError}</p>}
               </div>
               <div className="flex gap-2">
-                <Button onClick={handleSubmit} disabled={!allCorrect || !regex} className="gap-2">
+                <Button onClick={handleSubmit} disabled={!allCorrect || !regex} className="gap-2 cursor-pointer" title="Submit Regex">
                   {allCorrect ? "Next Level" : "Check"}
                 </Button>
                 <Button onClick={() => {
                   setShowHint(true)
-                }} className="gap-2">Hint</Button>
+                }} className="gap-2 cursor-pointer" title="Show Hint">
+                  <Lightbulb />
+                </Button>
               </div>
             </div>
           </div>
@@ -187,40 +203,7 @@ export default function Game() {
               </div>
             </div>
             <div className="space-y-2">
-              {results.map((result, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center  justify-between flex-wrap p-3 rounded-lg border ${regex && result.correct
-                    ? " border-green-400"
-                    : regex && !result.correct
-                      ? " border-red-400"
-                      : " border-gray-200"
-                    }`}
-                >
-                  <code className="font-mono">
-                    <HighlightedRegexText
-                      text={result.text}
-                      regex={regexObj ? new RegExp(regexObj.source, regexObj.flags + "g") : null}
-                    />
-                  </code>
-                  {/* <code className="font-mono text-sm">{result.text}</code> */}
-                  <div className="flex items-center gap-2">
-                    <Badge variant={result.shouldMatch ? "default" : "secondary"}>
-                      {result.shouldMatch ? "Should Match" : "Should Not Match"}
-                    </Badge>
-                    {regex && (
-                      <div className="flex items-center gap-1">
-                        {result.matches && <Badge variant="outline">Matches</Badge>}
-                        {result.correct ? (
-                          <CheckCircle className="w-5 h-5 text-green-600" />
-                        ) : (
-                          <XCircle className="w-5 h-5 text-red-600" />
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
+              <TestStrings regex={regex} results={results} level={level} />
             </div>
           </div>
 
@@ -243,10 +226,72 @@ export default function Game() {
       <div className="text-center text-sm text-muted-foreground">
         <p>
           Copyright &copy; {new Date().getFullYear()} by{' '}
-          <a href="https://dytra.github.io" target="_blank" rel="noreferrer">dytra</a>.{' '}
+          <a href="https://github.com/dytra" target="_blank" rel="noreferrer">dytra</a>.{' '}
           All rights reserved.
         </p>
       </div>
     </div>
+  )
+}
+
+type TestString = {
+  text: string
+  shouldMatch: boolean
+  matches: boolean
+  correct: boolean
+}
+type TestStringsProps = {
+  regex: string
+  results: TestString[]
+  level: Level
+}
+const TestStrings = ({
+  regex,
+  results,
+  level,
+}: TestStringsProps
+) => {
+  return (
+    <>
+      {results.map((result, index) => (
+        <motion.div
+          key={`${level.id}-${index}`} // Use level.id to ensure unique keys across levels
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 20,
+            bounce: 0.4,
+            duration: 0.35,
+            delay: index * 0.085,
+            ease: "easeInOut"
+          }}
+          className={`flex items-center justify-between flex-wrap p-3 rounded-lg border ${regex && result.correct
+            ? " border-green-400"
+            : regex && !result.correct
+              ? " border-red-400"
+              : " border-gray-200"
+            }`}
+        >
+          <code className="font-mono">{result.text}</code>
+          <div className="flex items-center gap-2">
+            <Badge variant={result.shouldMatch ? "default" : "secondary"}>
+              {result.shouldMatch ? "Should Match" : "Should Not Match"}
+            </Badge>
+            {regex && (
+              <div className="flex items-center gap-1">
+                {result.matches && <Badge variant="outline">Matches</Badge>}
+                {result.correct ? (
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                ) : (
+                  <XCircle className="w-5 h-5 text-red-600" />
+                )}
+              </div>
+            )}
+          </div>
+        </motion.div>
+      ))}
+    </>
   )
 }
