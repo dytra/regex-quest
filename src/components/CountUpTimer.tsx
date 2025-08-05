@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 type CountUpTimerProps = {
   startSeconds?: number; // Optional starting point
+  seconds: number;
+  setSeconds: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const formatTime = (totalSeconds: number) => {
@@ -11,8 +13,7 @@ const formatTime = (totalSeconds: number) => {
   return `${hours}:${minutes}:${seconds}`;
 };
 
-const CountUpTimer: React.FC<CountUpTimerProps> = ({ startSeconds = 0 }) => {
-  const [seconds, setSeconds] = useState(startSeconds);
+const CountUpTimer: React.FC<CountUpTimerProps> = ({ startSeconds = 0, seconds, setSeconds }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {

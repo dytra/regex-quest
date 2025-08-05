@@ -25,6 +25,7 @@ export default function Game() {
   const [showHint, setShowHint] = useState(false)
   const [gameComplete, setGameComplete] = useState(false)
   const [regexError, setRegexError] = useState("")
+  const [seconds, setSeconds] = useState(0);
   const sfxPopRef = useRef<HTMLAudioElement | null>(null)
   const sfxVictoryRef = useRef<HTMLAudioElement | null>(null)
 
@@ -144,6 +145,7 @@ export default function Game() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-green-600 mb-4">Final Score: {score}</div>
+            <div className="text-3xl font-bold text-green-600 mb-4">Time Elapsed: {seconds} seconds</div>
             <Button onClick={resetGame} className="gap-2">
               <RotateCcw className="w-4 h-4" />
               Play Again
@@ -156,7 +158,7 @@ export default function Game() {
 
   return (
     <>
-      
+
 
       <div className="flex justify-between items-center">
         <div className="flex gap-4">
@@ -165,7 +167,7 @@ export default function Game() {
           </Badge>
           <Badge variant="outline" className="text-sm">Score: {score}</Badge>
           <Badge variant="outline" className="text-sm">
-            <CountUpTimer />
+            <CountUpTimer seconds={seconds} setSeconds={setSeconds} />
           </Badge>
           {/* <Badge variant="outline">Attempts: {attempts}</Badge> */}
         </div>
@@ -191,6 +193,7 @@ export default function Game() {
             <label htmlFor="regex" className=" font-medium mb-1">
               Enter your regular expression:
             </label>
+
             <div className="flex flex-col md:flex-row gap-2">
               <div className="flex-1 relative">
                 <Input
@@ -232,6 +235,9 @@ export default function Game() {
                 </Button>
               </div>
             </div>
+            {/* <Button onClick={() => {
+              setGameComplete(true);
+            }}>Victory</Button> */}
           </div>
 
           <div className="space-y-2">
