@@ -1,10 +1,15 @@
 "use client";
-import Game from "@/components/game";
+// import Game from "@/components/game";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import dynamic from "next/dynamic";
+
+const Game = dynamic(() => import("@/components/game"), {
+  ssr: false,
+});
 
 export default function Home() {
   const [gameStart, setGameStart] = useState(false)
@@ -59,7 +64,9 @@ export default function Home() {
         <p className="text-muted-foreground">Master regular expresssions through interactive challenges</p>
       </div>
       {gameStart && (
-        <Game />
+        <Suspense fallback={<div><p className="text-center">Loading...</p></div>}>
+          <Game />
+        </Suspense>
       )}
     </div>
   );
