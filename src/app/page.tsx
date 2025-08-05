@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Home() {
   const [gameStart, setGameStart] = useState(false)
@@ -19,6 +20,35 @@ export default function Home() {
           <p className="text-muted-foreground">Master regular expresssions through interactive challenges</p>
         </div>
         <Menu onGameStart={handleStartGame} />
+        <Card className="max-w-xl border-4 border-white mx-auto">
+          <CardHeader>
+            <CardTitle>What is Regex?</CardTitle>
+            <CardDescription>
+              A quick introduction to regular expressions
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm text-muted-foreground">
+            <p>
+              <strong>Regex</strong> (short for <em>regular expression</em>) is a powerful tool used to
+              search, match, and manipulate text based on specific patterns.
+            </p>
+            <p>
+              It’s commonly used in programming, data validation, search engines, and text editors. For
+              example, the pattern <code className="bg-muted px-1 py-0.5 rounded font-mono text-xs">^\d+$</code>{' '}
+              matches a string that contains only digits.
+            </p>
+            Regex lets you do things like:
+            <ul className="list-disc list-inside mt-1">
+              <li>Check if an email is valid</li>
+              <li>Find all hashtags in a tweet</li>
+              <li>Replace words in a sentence</li>
+            </ul>
+            <p>
+              While regex can look intimidating at first, learning the basics opens up a lot of power
+              for text processing and automation.
+            </p>
+          </CardContent>
+        </Card>
       </div>
     )
   }
