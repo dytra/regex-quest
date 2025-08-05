@@ -24,6 +24,7 @@ export default function Game() {
   const [gameComplete, setGameComplete] = useState(false)
   const [regexError, setRegexError] = useState("")
   const sfxPopRef = useRef<HTMLAudioElement | null>(null)
+  const sfxVictoryRef = useRef<HTMLAudioElement | null>(null)
 
 
   const level = levels[currentLevel]
@@ -106,6 +107,10 @@ export default function Game() {
     sfxPopRef.current = new Audio('/pop.mp3')
     sfxPopRef.current.volume = 0.35
   }, [])
+  useEffect(() => {
+    sfxVictoryRef.current = new Audio('/victory.mp3')
+    // sfxVictoryRef.current.volume = 0.35
+  }, [])
 
   useEffect(() => {
     if (!allCorrect || !sfxPopRef.current) return;
@@ -114,6 +119,15 @@ export default function Game() {
       console.error("play() failed:", e)
     })
   }, [allCorrect])
+
+
+  useEffect(() => {
+    if (!gameComplete || !sfxVictoryRef.current) return;
+    sfxVictoryRef.current.currentTime = 0
+    sfxVictoryRef.current.play().catch((e) => {
+      console.error("play() failed:", e)
+    })
+  }, [gameComplete])
 
   if (gameComplete) {
     return (
@@ -124,7 +138,7 @@ export default function Game() {
               <Trophy className="w-16 h-16 text-yellow-500" />
             </div>
             <CardTitle className="text-2xl">Congratulations!</CardTitle>
-            <CardDescription>You've completed all regex challenges!</CardDescription>
+            <CardDescription>You've completed all of the ReGex challenges!</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-green-600 mb-4">Final Score: {score}</div>
@@ -159,6 +173,9 @@ export default function Game() {
             Reset
           </Button>
           <ModeToggle />
+          <Button onClick={() => {
+            setGameComplete(true);
+          }}>Victory</Button>
         </div>
       </div>
 
