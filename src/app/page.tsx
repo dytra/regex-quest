@@ -6,6 +6,7 @@ import { Suspense, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import dynamic from "next/dynamic";
+import { Badge } from "@/components/ui/badge";
 
 const Game = dynamic(() => import("@/components/game"), {
   ssr: false,
@@ -21,7 +22,15 @@ export default function Home() {
     return (
       <div id="dudu" className="flex flex-col justify-center items-center mx-auto my-auto min-h-screen p-3 space-y-6">
         <div className="text-center space-y-2">
-          <Link href={"/"}><h1 className="text-3xl font-bold">RegEx Quest <Image src={"/sword.png"} className="inline w-8 h-8 image-crisp relative bottom-1" alt={"sword regex game pixel art"} width={50} height={50} /></h1></Link>
+          <Badge variant={"outline"}>
+            Regex Quest
+            <Image src={"/sword.png"} className="inline w-3 h-3 image-crisp relative " alt={"sword regex game pixel art"} width={50} height={50} />
+          </Badge>
+
+          <Link href={"/"}><h1 className="text-3xl font-bold">Learn Regex Through Interactive Challenges </h1></Link>
+          {/* <div className="max-w-xl text-muted-foreground">
+            <p>Welcome to <strong>Regex Quest</strong> — an interactive game to learn and master regular expressions through fun and challenging levels. Whether you're a beginner or a seasoned developer, sharpen your skills and conquer regex with hands-on practice.</p>
+          </div> */}
           <p className="text-muted-foreground">Master regular expresssions through interactive challenges</p>
         </div>
         <Menu onGameStart={handleStartGame} />
@@ -54,6 +63,13 @@ export default function Home() {
             </p>
           </CardContent>
         </Card>
+        <div className="text-center text-sm text-muted-foreground">
+          <p>
+            Copyright &copy; {new Date().getFullYear()} by{' '}
+            <a href="https://github.com/dytra" target="_blank" rel="noreferrer">dytra</a>.{' '}
+            All rights reserved.
+          </p>
+        </div>
       </div>
     )
   }
