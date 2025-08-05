@@ -94,8 +94,9 @@ const Menu = ({
   onGameStart: () => void
 }) => {
   return (
-    <div className="flex flex-col justify-center items-center ">
+    <div className="flex flex-col gap-3 justify-center items-center ">
       <Button onClick={onGameStart} className="cursor-pointer" >Start Game</Button>
+      <Link href="https://www.notion.so/dytra/Regex-Cheatsheet-24271709dbe18063b0f3c8f3f34147f4?source=copy_link" target="_blank"><Button variant={"outline"} className="cursor-pointer" >Cheatsheet</Button></Link>
     </div>
   )
 }
