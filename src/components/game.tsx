@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -21,8 +21,10 @@ export default function Game() {
   const [score, setScore] = useState(0)
   const [attempts, setAttempts] = useState(0)
   const [showHint, setShowHint] = useState(false)
-  const [gameComplete, setGameComplete] = useState(true)
+  const [gameComplete, setGameComplete] = useState(false)
   const [regexError, setRegexError] = useState("")
+  const sfxPopRef = useRef<HTMLAudioElement | null>(null)
+
 
   const level = levels[currentLevel]
 
@@ -91,6 +93,7 @@ export default function Game() {
   const resetGame = () => {
     setCurrentLevel(0)
     setRegex("")
+    setRegexObj(null);
     setScore(0)
     setAttempts(0)
     setShowHint(false)
@@ -98,6 +101,19 @@ export default function Game() {
     setRegexError("")
   }
 
+
+  useEffect(() => {
+    sfxPopRef.current = new Audio('/pop.mp3')
+    sfxPopRef.current.volume = 0.35
+  }, [])
+
+  useEffect(() => {
+    if (!allCorrect || !sfxPopRef.current) return;
+    sfxPopRef.current.currentTime = 0
+    sfxPopRef.current.play().catch((e) => {
+      console.error("play() failed:", e)
+    })
+  }, [allCorrect])
 
   if (gameComplete) {
     return (
