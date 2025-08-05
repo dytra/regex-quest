@@ -146,7 +146,7 @@ export default function Game() {
           <CardContent>
             <div className="text-3xl font-bold text-green-600 mb-4">Final Score: {score}</div>
             <div className="text-3xl font-bold text-green-600 mb-4">Time Elapsed: {seconds} seconds</div>
-            <Button onClick={resetGame} className="gap-2">
+            <Button onClick={resetGame} className="gap-2 cursor-pointer">
               <RotateCcw className="w-4 h-4" />
               Play Again
             </Button>
