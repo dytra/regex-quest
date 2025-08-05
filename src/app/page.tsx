@@ -34,7 +34,7 @@ export default function Home() {
           <p className="text-muted-foreground">Master regular expresssions through interactive challenges</p>
         </div>
         <Menu onGameStart={handleStartGame} />
-        <Card className="max-w-xl border-4 border-white mx-auto">
+        {/* <Card className="max-w-xl border-4 border-white mx-auto">
           <CardHeader>
             <CardTitle>What is Regex?</CardTitle>
             <CardDescription>
@@ -62,7 +62,7 @@ export default function Home() {
               for text processing and automation.
             </p>
           </CardContent>
-        </Card>
+        </Card> */}
         <div className="text-center text-sm text-muted-foreground">
           <p>
             Copyright &copy; {new Date().getFullYear()} by{' '}
