@@ -27,11 +27,11 @@ export default function Home() {
             <Image src={"/sword.png"} className="inline w-3 h-3 image-crisp relative " alt={"sword regex game pixel art"} width={50} height={50} />
           </Badge>
 
-          <Link href={"/"}><h1 className="text-3xl font-bold">Learn Regex Through Interactive Challenges </h1></Link>
-          {/* <div className="max-w-xl text-muted-foreground">
-            <p>Welcome to <strong>Regex Quest</strong> — an interactive game to learn and master regular expressions through fun and challenging levels. Whether you're a beginner or a seasoned developer, sharpen your skills and conquer regex with hands-on practice.</p>
-          </div> */}
-          <p className="text-muted-foreground">Master regular expresssions through interactive challenges</p>
+          <Link href={"/"}><h1 className="text-3xl font-bold mb-1">Learn Regex Through Interactive Challenges </h1></Link>
+          <div className="max-w-xl text-muted-foreground">
+          <p className="leading-4">Master regular expressions through fun and challenging levels. Whether you're a beginner or a seasoned developer, sharpen your skills and conquer regex with hands-on practice.</p>
+          </div>
+          {/* <p className="text-muted-foreground">Master regular expresssions through interactive challenges</p> */}
         </div>
         <Menu onGameStart={handleStartGame} />
         {/* <Card className="max-w-xl border-4 border-white mx-auto">
@@ -63,7 +63,7 @@ export default function Home() {
             </p>
           </CardContent>
         </Card> */}
-        <div className="text-center text-sm text-muted-foreground">
+        <div className="text-center text-sm text-muted-foreground mt-30">
           <p>
             Copyright &copy; {new Date().getFullYear()} by{' '}
             <a href="https://github.com/dytra" target="_blank" rel="noreferrer">dytra</a>.{' '}
