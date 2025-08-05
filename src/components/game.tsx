@@ -53,7 +53,7 @@ export default function Game() {
         const matchedString = match?.[0] ?? "";
         const shouldFullMatch = level?.fullMatch;
 
-        let matches = !!match;
+        const matches = !!match;
         let correct = matches === item.shouldMatch;
 
         if (level?.requiredWord) {
