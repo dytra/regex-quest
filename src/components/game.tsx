@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -60,6 +60,13 @@ export default function Game() {
 
   const allCorrect = results.length > 0 && results.every((r) => r.correct) && regex !== ""
   const correctCount = results.filter((r) => r.correct).length
+  
+  useEffect(() => {
+    if(!allCorrect) return;
+    const popSound = new Audio('/pop.mp3'); // Make sure the path is correct
+    // popSound.volume = .35;
+    popSound.play();
+  },[allCorrect])
 
   const handleSubmit = () => {
     if (allCorrect) {
@@ -75,6 +82,9 @@ export default function Game() {
           richColors: true,
           duration: 3000
         })
+        const sound = new Audio('/correct.mp3'); // Make sure the path is correct
+        sound.volume = .35;
+        sound.play();
       } else {
         setGameComplete(true)
       }
