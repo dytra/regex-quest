@@ -39,7 +39,7 @@ export default function Game() {
       const regexObj = level?.fullMatch ? new RegExp(`^${regex}$`, "i") : new RegExp(regex, "")
       // const regexObj = new RegExp(regex, "i")
       setRegexError("")
-      setRegexObj(regex ? regexObj : null);
+      setRegexObj(level?.fullMatch ? new RegExp(`${regex}`, "i") : new RegExp(regex, ""));
 
       return level.testStrings.map((item) => {
         return {
