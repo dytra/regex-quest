@@ -7,5 +7,6 @@
         "editor.defaultFormatter": "vscode.typescript-language-features"
     },
     "editor.indentSize": "tabSize",
-    "workbench.tree.indent": 4,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
 }
