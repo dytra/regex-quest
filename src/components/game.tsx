@@ -155,11 +155,8 @@ export default function Game() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-3 space-y-6">
-      <div className="text-center space-y-2">
-        <Link href={"/"}><h1 className="text-3xl font-bold">RegEx Quest <Image src={"/sword.png"} className="inline w-8 h-8 image-crisp relative bottom-1" alt={"sword regex game pixel art"} width={50} height={50} /></h1></Link>
-        <p className="text-muted-foreground">Master regular expresssions through interactive challenges</p>
-      </div>
+    <>
+      
 
       <div className="flex justify-between items-center">
         <div className="flex gap-4">
@@ -272,7 +269,7 @@ export default function Game() {
           All rights reserved.
         </p>
       </div>
-    </div>
+    </>
   )
 }
 
