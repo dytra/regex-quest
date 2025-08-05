@@ -10,10 +10,12 @@ import { ModeToggle } from "./ui/mode-toggle"
 import Image from "next/image";
 import { levels } from "@/lib/levels"
 import Link from "next/link"
+import HighlightedRegexText from "./highlighted-regex-text"
 
 export default function Game() {
   const [currentLevel, setCurrentLevel] = useState(0)
-  const [regex, setRegex] = useState("")
+  const [regex, setRegex] = useState("");
+  const [regexObj, setRegexObj] = useState<RegExp | null>(null);
   const [score, setScore] = useState(0)
   const [attempts, setAttempts] = useState(0)
   const [showHint, setShowHint] = useState(false)
@@ -35,6 +37,7 @@ export default function Game() {
       const regexObj = level?.fullMatch ? new RegExp(`^${regex}$`, "i") : new RegExp(regex, "")
       // const regexObj = new RegExp(regex, "i")
       setRegexError("")
+      setRegexObj(regex ? regexObj : null);
 
       return level.testStrings.map((item) => {
         return {
@@ -117,7 +120,7 @@ export default function Game() {
       <div className="flex justify-between items-center">
         <div className="flex gap-4">
           <Badge variant="secondary">
-            Level {currentLevel+1}/{levels.length}
+            Level {currentLevel + 1}/{levels.length}
           </Badge>
           <Badge variant="outline">Score: {score}</Badge>
           <Badge variant="outline">Attempts: {attempts}</Badge>
@@ -149,7 +152,12 @@ export default function Game() {
                 <Input
                   id="regex"
                   value={regex}
-                  onChange={(e) => setRegex(e.target.value)}
+                  onChange={(e) => {
+                    if(!e.target.value) {
+                      setRegexObj(null);
+                    }
+                    setRegex(e.target.value);
+                  }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && allCorrect && regex) {
                       handleSubmit()
@@ -189,7 +197,13 @@ export default function Game() {
                       : " border-gray-200"
                     }`}
                 >
-                  <code className="font-mono text-sm">{result.text}</code>
+                  <code className="font-mono">
+                    <HighlightedRegexText
+                      text={result.text}
+                      regex={regexObj ? new RegExp(regexObj.source, regexObj.flags + "g") : null}
+                    />
+                  </code>
+                  {/* <code className="font-mono text-sm">{result.text}</code> */}
                   <div className="flex items-center gap-2">
                     <Badge variant={result.shouldMatch ? "default" : "secondary"}>
                       {result.shouldMatch ? "Should Match" : "Should Not Match"}
