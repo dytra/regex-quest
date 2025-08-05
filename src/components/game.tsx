@@ -13,6 +13,7 @@ import Link from "next/link"
 import HighlightedRegexText from "./highlighted-regex-text"
 import { motion } from "motion/react"
 import { toast } from "sonner"
+import { getRandomPraise } from "@/lib/praiseMessages"
 
 export default function Game() {
   const [currentLevel, setCurrentLevel] = useState(0)
@@ -76,7 +77,7 @@ export default function Game() {
         setRegex("")
         // setAttempts(0)
         setShowHint(false)
-        toast.success("Correct!", {
+        toast.success(getRandomPraise(), {
           richColors: true,
           duration: 3000
         })
@@ -192,7 +193,7 @@ export default function Game() {
             <label htmlFor="regex" className=" font-medium mb-1">
               Enter your regular expression:
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col md:flex-row gap-2">
               <div className="flex-1 relative">
                 <Input
                   id="regex"
@@ -223,7 +224,7 @@ export default function Game() {
               </div>
               <div className="flex gap-2">
                 <Button onClick={handleSubmit} disabled={!allCorrect || !regex} className="gap-2 cursor-pointer" title="Submit Regex">
-                  {allCorrect ? "Next Level" : "Check"}
+                  Next
                 </Button>
                 <Button onClick={() => {
                   setShowHint(true)
