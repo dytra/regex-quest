@@ -216,6 +216,7 @@ export default function Game() {
                   }}
                   placeholder="Enter regex pattern..."
                   className={`font-mono ${regexError ? "border-red-500" : ""}`}
+                  autoComplete="off"
                 />
                 {regexError && <p className="text-sm text-red-500 mt-1">{regexError}</p>}
               </div>
