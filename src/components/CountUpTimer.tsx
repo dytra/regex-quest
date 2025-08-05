@@ -1,8 +1,7 @@
-"use client";
 import React, { useEffect, useState } from 'react';
 
-type CountdownTimerProps = {
-  initialSeconds: number;
+type CountUpTimerProps = {
+  startSeconds?: number; // Optional starting point
 };
 
 const formatTime = (totalSeconds: number) => {
@@ -12,20 +11,18 @@ const formatTime = (totalSeconds: number) => {
   return `${hours}:${minutes}:${seconds}`;
 };
 
-const CountdownTimer: React.FC<CountdownTimerProps> = ({ initialSeconds }) => {
-  const [secondsLeft, setSecondsLeft] = useState(initialSeconds);
+const CountUpTimer: React.FC<CountUpTimerProps> = ({ startSeconds = 0 }) => {
+  const [seconds, setSeconds] = useState(startSeconds);
 
   useEffect(() => {
-    if (secondsLeft <= 0) return;
-
     const interval = setInterval(() => {
-      setSecondsLeft((prev) => prev - 1);
+      setSeconds((prev) => prev + 1);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [secondsLeft]);
+  }, []);
 
-  return <div>{formatTime(secondsLeft)}</div>;
+  return <div>{formatTime(seconds)}</div>;
 };
 
-export default CountdownTimer;
+export default CountUpTimer;

@@ -14,6 +14,7 @@ import HighlightedRegexText from "./highlighted-regex-text"
 import { motion } from "motion/react"
 import { toast } from "sonner"
 import { getRandomPraise } from "@/lib/praiseMessages"
+import CountUpTimer from "./CountUpTimer"
 
 export default function Game() {
   const [currentLevel, setCurrentLevel] = useState(0)
@@ -166,6 +167,9 @@ export default function Game() {
             Level {currentLevel + 1}/{levels.length}
           </Badge>
           <Badge variant="outline" className="text-sm">Score: {score}</Badge>
+          <Badge variant="outline" className="text-sm">
+            <CountUpTimer />
+          </Badge>
           {/* <Badge variant="outline">Attempts: {attempts}</Badge> */}
         </div>
         <div>
