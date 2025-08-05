@@ -174,9 +174,6 @@ export default function Game() {
             Reset
           </Button>
           <ModeToggle />
-          <Button onClick={() => {
-            setGameComplete(true);
-          }}>Victory</Button>
         </div>
       </div>
 
