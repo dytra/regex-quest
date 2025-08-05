@@ -30,7 +30,7 @@ export default function Game() {
   const sfxVictoryRef = useRef<HTMLAudioElement | null>(null)
 
 
-  const level = levels[currentLevel]
+  const level = levels[currentLevel];
 
   const results = useMemo(() => {
     if (!regex) {
@@ -46,14 +46,26 @@ export default function Game() {
       // const regexObj = new RegExp(regex, "i")
       setRegexError("")
       setRegexObj(level?.fullMatch ? new RegExp(`${regex}`, "i") : new RegExp(regex, ""));
-
       return level.testStrings.map((item) => {
+        const match = item.text.match(regexObj);
+
+        // Validate match manually
+        const matchedString = match?.[0] ?? "";
+        const shouldFullMatch = level?.fullMatch;
+
+        let matches = !!match;
+        let correct = matches === item.shouldMatch;
+
+        if (level?.requiredWord) {
+          correct = matchedString.includes(level.requiredWord);
+        }
+
         return {
           ...item,
-          matches: regexObj.test(item.text),
-          correct: regexObj.test(item.text) === item.shouldMatch,
-        }
-      })
+          matches,
+          correct,
+        };
+      });
     } catch (error) {
       setRegexError("Invalid regular expression")
       return level.testStrings.map((item) => ({
