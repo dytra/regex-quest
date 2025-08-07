@@ -15,6 +15,7 @@ import { motion } from "motion/react"
 import { toast } from "sonner"
 import { getRandomPraise } from "@/lib/praiseMessages"
 import CountUpTimer from "./CountUpTimer"
+import { cn } from "@/lib/utils"
 
 export default function Game() {
   const [currentLevel, setCurrentLevel] = useState(0)
@@ -26,6 +27,7 @@ export default function Game() {
   const [gameComplete, setGameComplete] = useState(false)
   const [regexError, setRegexError] = useState("")
   const [seconds, setSeconds] = useState(0);
+  const [disableHighlight, setDisableHighlight] = useState(true);
   const sfxPopRef = useRef<HTMLAudioElement | null>(null)
   const sfxVictoryRef = useRef<HTMLAudioElement | null>(null)
 
@@ -102,6 +104,7 @@ export default function Game() {
         setGameComplete(true)
       }
     } else {
+      setDisableHighlight(false);
       // setAttempts(attempts + 1)
     }
   }
@@ -237,8 +240,10 @@ export default function Game() {
                 {regexError && <p className="text-sm text-red-500 mt-1">{regexError}</p>}
               </div>
               <div className="flex gap-2">
-                <Button onClick={handleSubmit} disabled={!allCorrect || !regex} className="gap-2 cursor-pointer" title="Submit Regex">
-                  Next
+                <Button onClick={handleSubmit}
+                  // disabled={!allCorrect || !regex} 
+                  className="gap-2 cursor-pointer" title="Submit Regex">
+                  Submit
                 </Button>
                 <Button onClick={() => {
                   setShowHint(true)
@@ -260,7 +265,7 @@ export default function Game() {
               </div>
             </div>
             <div className="space-y-2">
-              <TestStrings regex={regex} results={results} level={level} regexObj={regexObj} />
+              <TestStrings regex={regex} results={results} level={level} regexObj={regexObj} disableHighlight={disableHighlight} />
             </div>
           </div>
 
@@ -302,12 +307,14 @@ type TestStringsProps = {
   results: TestString[]
   level: Level
   regexObj?: RegExp | null
+  disableHighlight?: boolean
 }
 const TestStrings = ({
   regex,
   results,
   level,
   regexObj,
+  disableHighlight
 }: TestStringsProps
 ) => {
   return (
@@ -326,17 +333,27 @@ const TestStrings = ({
             delay: index * 0.085,
             ease: "easeInOut"
           }}
-          className={`flex items-center justify-between flex-wrap p-3 rounded-lg border ${regex && result.correct
-            ? " border-green-400"
-            : regex && !result.correct
-              ? " border-red-400"
-              : " border-gray-200"
-            }`}
+          className={cn(
+            "flex items-center justify-between flex-wrap p-3 rounded-lg border transition-colors",
+            (!disableHighlight && regex && result.correct)
+              ? "border-green-400 hover:border-green-500"
+              : (!disableHighlight && regex && !result.correct)
+                ? "border-red-400 hover:border-red-500"
+                : "border-gray-200 hover:border-gray-300"
+          )}
+
+        // className={`flex items-center justify-between flex-wrap p-3 rounded-lg border ${regex && result.correct
+        //   ? " border-green-400"
+        //   : regex && !result.correct
+        //     ? " border-red-400"
+        //     : " border-gray-200"
+        //   }`}
         >
           <code className="font-mono">
             <HighlightedRegexText
               text={result.text}
               regex={regexObj ? new RegExp(regexObj.source, regexObj.flags + "g") : null}
+              disabled={disableHighlight}
             />
           </code>
           {/* <code className="font-mono">{result.text}</code> */}
