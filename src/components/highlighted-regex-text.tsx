@@ -3,13 +3,15 @@
 interface HighlightedRegexTextProps {
   text: string;
   regex?: RegExp | null;
+  disabled?: boolean;
 }
 
 const HighlightedRegexText: React.FC<HighlightedRegexTextProps> = ({
   text,
   regex,
+  disabled,
 }) => {
-  if (!regex) return <>{text}</>;
+  if (!regex || disabled) return <>{text}</>;
 
   // Split the text using the regex, while keeping the matches
   const matches = [...text.matchAll(regex)];
