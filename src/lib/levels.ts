@@ -53,7 +53,6 @@ export const levels:Level[] = [
       { text: "0", shouldMatch: true },
       { text: "123abc", shouldMatch: false },
       { text: "42!", shouldMatch: false },
-      { text: "   789", shouldMatch: false },
     ],
     hint: "Use \\d to match digits. Use ^ and $ to match the entire string.",
   },
