@@ -91,6 +91,7 @@ export default function Game() {
       setCurrentLevel(currentLevel + 1)
       setSubmitted(false);
       setDisableHighlight(true);
+      setRegex("");
       return;
     }
     if (allCorrect) {
@@ -115,6 +116,9 @@ export default function Game() {
       }
     } else {
       setDisableHighlight(false);
+      const sound = new Audio('/wrong.mp3'); // Make sure the path is correct
+        sound.volume = .5;
+      sound.play();
       // setAttempts(attempts + 1)
     }
   }
@@ -356,9 +360,9 @@ const TestStrings = ({
           }}
           className={cn(
             "flex items-center justify-between flex-wrap p-3 rounded-lg border transition-colors",
-            (!disableHighlight && regex && result.correct)
+            (submitted && !disableHighlight && regex && result.correct)
               ? "border-green-400 hover:border-green-500"
-              : (!disableHighlight && regex && !result.correct)
+              : (submitted && !disableHighlight && regex && !result.correct)
                 ? "border-red-400 hover:border-red-500"
                 : "border-gray-200 hover:border-gray-300"
           )}
@@ -374,7 +378,7 @@ const TestStrings = ({
             <HighlightedRegexText
               text={result.text}
               regex={regexObj ? new RegExp(regexObj.source, regexObj.flags + "g") : null}
-              disabled={disableHighlight}
+              disabled={!submitted}
             />
           </code>
           {/* <code className="font-mono">{result.text}</code> */}
