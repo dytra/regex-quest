@@ -87,6 +87,12 @@ export default function Game() {
 
   const handleSubmit = () => {
     setSubmitted(true);
+    if (submitted && allCorrect) {
+      setCurrentLevel(currentLevel + 1)
+      setSubmitted(false);
+      setDisableHighlight(true);
+      return;
+    }
     if (allCorrect) {
       const points = Math.max(100 - attempts * 10, 10)
       setScore(score + points)
@@ -220,6 +226,7 @@ export default function Game() {
                   value={regex}
                   onChange={(e) => {
                     if (submitted) {
+                      setSubmitted(false);
                       setDisableHighlight(false);
                     }
                     if (!e.target.value) {
@@ -247,11 +254,15 @@ export default function Game() {
                 {regexError && <p className="text-sm text-red-500 mt-1">{regexError}</p>}
               </div>
               <div className="flex gap-2">
-                <Button onClick={handleSubmit}
-                  // disabled={!allCorrect || !regex} 
-                  className="gap-2 cursor-pointer" title="Submit Regex">
-                  Submit
-                </Button>
+                {(true) && (
+                  <Button onClick={handleSubmit}
+                    // disabled={!allCorrect || !regex} 
+                    className="gap-2 cursor-pointer" title="Submit Regex">
+                    {submitted && allCorrect ? "Next" : "Submit"}
+                  </Button>
+
+                )}
+
                 <Button onClick={() => {
                   setShowHint(true)
                 }} className="gap-2 cursor-pointer" title="Show Hint">
@@ -272,7 +283,7 @@ export default function Game() {
               </div>
             </div>
             <div className="space-y-2">
-              <TestStrings regex={regex} results={results} level={level} regexObj={regexObj} disableHighlight={disableHighlight} />
+              <TestStrings regex={regex} results={results} level={level} regexObj={regexObj} disableHighlight={disableHighlight} submitted={submitted} />
             </div>
           </div>
 
@@ -308,6 +319,7 @@ type TestString = {
   shouldMatch: boolean
   matches: boolean
   correct: boolean
+
 }
 type TestStringsProps = {
   regex: string
@@ -315,13 +327,15 @@ type TestStringsProps = {
   level: Level
   regexObj?: RegExp | null
   disableHighlight?: boolean
+  submitted: boolean
 }
 const TestStrings = ({
   regex,
   results,
   level,
   regexObj,
-  disableHighlight
+  disableHighlight,
+  submitted
 }: TestStringsProps
 ) => {
   return (
@@ -368,7 +382,7 @@ const TestStrings = ({
             <Badge variant={result.shouldMatch ? "default" : "secondary"}>
               {result.shouldMatch ? "Should Match" : "Should Not Match"}
             </Badge>
-            {(!disableHighlight) && (
+            {(submitted) && (
               <div className="flex items-center gap-1">
                 {result.matches && <Badge variant="outline">Matches</Badge>}
                 {result.correct ? (
