@@ -67,7 +67,6 @@ export default function Game() {
           matches,
           correct,
         }
-        console.log("ret bro : ", ret);
         return ret;
       });
     } catch (error) {
