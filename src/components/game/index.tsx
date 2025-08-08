@@ -6,16 +6,16 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle, XCircle, Target, Trophy, RotateCcw, Lightbulb } from "lucide-react"
-import { ModeToggle } from "./ui/mode-toggle"
 import Image from "next/image";
 import { Level, levels } from "@/lib/levels"
 import Link from "next/link"
-import HighlightedRegexText from "./highlighted-regex-text"
 import { motion } from "motion/react"
 import { toast } from "sonner"
 import { getRandomPraise } from "@/lib/praiseMessages"
-import CountUpTimer from "./CountUpTimer"
 import { cn } from "@/lib/utils"
+import { ModeToggle } from "../ui/mode-toggle"
+import HighlightedRegexText from "../highlighted-regex-text"
+import CountUpTimer from "../CountUpTimer"
 
 export default function Game() {
   const [currentLevel, setCurrentLevel] = useState(0)

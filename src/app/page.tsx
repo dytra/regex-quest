@@ -8,7 +8,7 @@ import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader,
 import dynamic from "next/dynamic";
 import { Badge } from "@/components/ui/badge";
 
-const Game = dynamic(() => import("@/components/game"), {
+const Game = dynamic(() => import("@/components/game/index"), {
   ssr: false,
 });
 
