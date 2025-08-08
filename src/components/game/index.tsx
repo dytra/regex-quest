@@ -84,7 +84,7 @@ export default function Game() {
         correct: false,
       }))
     }
-  }, [regex, level.testStrings])
+  }, [regex, level?.testStrings])
 
   const allCorrect = results.length > 0 && results.every((r) => r.correct) && regex !== ""
   const correctCount = results.filter((r) => r.correct).length
