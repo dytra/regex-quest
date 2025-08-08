@@ -28,6 +28,7 @@ export default function Game() {
   const [regexError, setRegexError] = useState("")
   const [seconds, setSeconds] = useState(0);
   const [disableHighlight, setDisableHighlight] = useState(true);
+  const [submitted, setSubmitted] = useState(false);
   const sfxPopRef = useRef<HTMLAudioElement | null>(null)
   const sfxVictoryRef = useRef<HTMLAudioElement | null>(null)
 
@@ -35,13 +36,13 @@ export default function Game() {
   const level = levels[currentLevel];
 
   const results = useMemo(() => {
-    if (!regex) {
-      return level.testStrings.map((item) => ({
-        ...item,
-        matches: false,
-        correct: false,
-      }))
-    }
+    // if (!regex) {
+    //   return level.testStrings.map((item) => ({
+    //     ...item,
+    //     matches: false,
+    //     correct: false,
+    //   }))
+    // }
 
     try {
       const regexObj = level?.fullMatch ? new RegExp(`^${regex}$`, "i") : new RegExp(regex, "")
@@ -61,12 +62,13 @@ export default function Game() {
         if (level?.requiredWord) {
           correct = matchedString.includes(level.requiredWord);
         }
-
-        return {
+        const ret = {
           ...item,
           matches,
           correct,
-        };
+        }
+        console.log("ret bro : ", ret);
+        return ret;
       });
     } catch (error) {
       setRegexError("Invalid regular expression")
@@ -84,13 +86,15 @@ export default function Game() {
 
 
   const handleSubmit = () => {
+    setSubmitted(true);
     if (allCorrect) {
       const points = Math.max(100 - attempts * 10, 10)
       setScore(score + points)
 
       if (currentLevel < levels.length - 1) {
-        setCurrentLevel(currentLevel + 1)
-        setRegex("")
+        // setCurrentLevel(currentLevel + 1)
+        setDisableHighlight(false);
+        // setRegex("")
         // setAttempts(0)
         setShowHint(false)
         toast.success(getRandomPraise(), {
@@ -131,11 +135,11 @@ export default function Game() {
   }, [])
 
   useEffect(() => {
-    if (!allCorrect || !sfxPopRef.current) return;
-    sfxPopRef.current.currentTime = 0
-    sfxPopRef.current.play().catch((e) => {
-      console.error("play() failed:", e)
-    })
+    // if (!allCorrect || !sfxPopRef.current) return;
+    // sfxPopRef.current.currentTime = 0
+    // sfxPopRef.current.play().catch((e) => {
+    //   console.error("play() failed:", e)
+    // })
   }, [allCorrect])
 
 
@@ -215,13 +219,16 @@ export default function Game() {
                   id="regex"
                   value={regex}
                   onChange={(e) => {
+                    if (submitted) {
+                      setDisableHighlight(false);
+                    }
                     if (!e.target.value) {
                       setRegexObj(null);
                     }
                     setRegex(e.target.value);
                   }}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter" && allCorrect && regex) {
+                    if (e.key === "Enter" && regex) {
                       handleSubmit()
                     }
                   }}
@@ -361,7 +368,7 @@ const TestStrings = ({
             <Badge variant={result.shouldMatch ? "default" : "secondary"}>
               {result.shouldMatch ? "Should Match" : "Should Not Match"}
             </Badge>
-            {regex && (
+            {(!disableHighlight) && (
               <div className="flex items-center gap-1">
                 {result.matches && <Badge variant="outline">Matches</Badge>}
                 {result.correct ? (
