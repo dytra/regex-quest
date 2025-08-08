@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CheckCircle, XCircle, Target, Trophy, RotateCcw, Lightbulb } from "lucide-react"
+import { CheckCircle, XCircle, Target, Trophy, RotateCcw, Lightbulb, Skull } from "lucide-react"
 import Image from "next/image";
 import { Level, levels } from "@/lib/levels"
 import Link from "next/link"
@@ -26,6 +26,7 @@ export default function Game() {
   const [life, setLife] = useState(5)
   const [showHint, setShowHint] = useState(false)
   const [gameComplete, setGameComplete] = useState(false)
+  const [gameOver, setGameOver] = useState(false);
   const [regexError, setRegexError] = useState("")
   const [seconds, setSeconds] = useState(0);
   const [disableHighlight, setDisableHighlight] = useState(true);
@@ -116,7 +117,7 @@ export default function Game() {
         sound.volume = .35;
         sound.play();
       } else {
-        setGameComplete(true)
+        setGameComplete(true);
       }
     } else {
       setDisableHighlight(false);
@@ -127,8 +128,8 @@ export default function Game() {
       setTimeout(() => {
         regexInputRef.current?.focus();
       }, 0);
-      if(life -1 <= 0) {
-        setGameComplete(true);
+      if (life - 1 <= 0) {
+        setGameOver(true);
         return;
       }
       setLife(life - 1);
@@ -144,6 +145,7 @@ export default function Game() {
     setLife(5)
     setShowHint(false)
     setGameComplete(false)
+    setGameOver(false)
     setRegexError("");
     setSubmitted(false);
     setDisableHighlight(true);
@@ -186,6 +188,30 @@ export default function Game() {
             </div>
             <CardTitle className="text-2xl">Congratulations!</CardTitle>
             <CardDescription>You've completed all of the ReGex challenges!</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-green-600 mb-4">Final Score: {score}</div>
+            <div className="text-3xl font-bold text-green-600 mb-4">Time Elapsed: {seconds} seconds</div>
+            <Button onClick={resetGame} className="gap-2 cursor-pointer">
+              <RotateCcw className="w-4 h-4" />
+              Play Again
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  if (gameOver) {
+    return (
+      <div className="max-w-2xl mx-auto p-3 space-y-6">
+        <Card className="text-center">
+          <CardHeader>
+            <div className="flex justify-center mb-4">
+              <Skull className="w-16 h-16 text-gray-500" />
+            </div>
+            <CardTitle className="text-2xl">Game Over</CardTitle>
+            <CardDescription>You've run out of lives!</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-green-600 mb-4">Final Score: {score}</div>
