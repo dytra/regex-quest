@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils"
 export default function Game() {
   const [currentLevel, setCurrentLevel] = useState(0)
   const [regex, setRegex] = useState("");
+  const regexInputRef = useRef<HTMLInputElement | null>(null);
   const [regexObj, setRegexObj] = useState<RegExp | null>(null);
   const [score, setScore] = useState(0)
   const [attempts, setAttempts] = useState(0)
@@ -31,9 +32,15 @@ export default function Game() {
   const [submitted, setSubmitted] = useState(false);
   const sfxPopRef = useRef<HTMLAudioElement | null>(null)
   const sfxVictoryRef = useRef<HTMLAudioElement | null>(null)
+  const [wrongAnimKey, setWrongAnimKey] = useState(0);
 
 
   const level = levels[currentLevel];
+
+
+  const triggerWrongAnim = () => {
+    setWrongAnimKey(prev => prev + 1); // This will remount the div with animation class
+  };
 
   const results = useMemo(() => {
     // if (!regex) {
@@ -82,8 +89,6 @@ export default function Game() {
   const allCorrect = results.length > 0 && results.every((r) => r.correct) && regex !== ""
   const correctCount = results.filter((r) => r.correct).length
 
-
-
   const handleSubmit = () => {
     setSubmitted(true);
     if (submitted && allCorrect) {
@@ -115,9 +120,13 @@ export default function Game() {
       }
     } else {
       setDisableHighlight(false);
+      triggerWrongAnim();
       const sound = new Audio('/wrong.mp3'); // Make sure the path is correct
-        sound.volume = .5;
+      sound.volume = .5;
       sound.play();
+      setTimeout(() => {
+        regexInputRef.current?.focus();
+      }, 0);
       // setAttempts(attempts + 1)
     }
   }
@@ -225,6 +234,8 @@ export default function Game() {
             <div className="flex flex-col md:flex-row gap-2">
               <div className="flex-1 relative">
                 <Input
+                  key={wrongAnimKey}
+                  ref={regexInputRef}
                   id="regex"
                   value={regex}
                   onChange={(e) => {
@@ -251,8 +262,12 @@ export default function Game() {
                     })
                   }}
                   placeholder="Enter regex pattern..."
-                  className={`font-mono ${regexError ? "border-red-500" : ""}`}
+                  className={`animate__animated animate__shakeX  font-mono ${regexError ? "border-red-500" : ""}`}
                   autoComplete="off"
+                  style={{
+                    //@ts-ignore
+                    '--animate-duration': '0.3s',
+                  }}
                 />
                 {regexError && <p className="text-sm text-red-500 mt-1">{regexError}</p>}
               </div>
