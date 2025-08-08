@@ -141,10 +141,12 @@ export default function Game() {
     setRegex("")
     setRegexObj(null);
     setScore(0)
-    setLife(0)
+    setLife(5)
     setShowHint(false)
     setGameComplete(false)
-    setRegexError("")
+    setRegexError("");
+    setSubmitted(false);
+    setDisableHighlight(true);
   }
 
 
