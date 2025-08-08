@@ -238,6 +238,7 @@ export default function Game() {
                   ref={regexInputRef}
                   id="regex"
                   value={regex}
+                  readOnly={submitted && allCorrect}
                   onChange={(e) => {
                     if (submitted) {
                       setSubmitted(false);
@@ -268,6 +269,7 @@ export default function Game() {
                     //@ts-ignore
                     '--animate-duration': '0.3s',
                   }}
+
                 />
                 {regexError && <p className="text-sm text-red-500 mt-1">{regexError}</p>}
               </div>
